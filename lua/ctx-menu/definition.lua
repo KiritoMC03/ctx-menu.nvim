@@ -1,5 +1,6 @@
 --- @class Item
 --- @field name string
+--- @field func function
 --- @field childred? Item[]
 
 --- @class CtxMenu.Definition
