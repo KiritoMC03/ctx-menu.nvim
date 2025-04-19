@@ -1,9 +1,14 @@
+--- @class CtxMenuItem
+--- @field name string
+--- @field func function
+--- @field childred? CtxMenuItem[]
+
 --- @class CtxMenu
 local CtxMenu = {}
 local markup = require("ctx-menu.markup")
 local mappings = require("ctx-menu.mappings")
 local event_handler = require("ctx-menu.event_handler")
-local definition = require("ctx-menu.definition")
+local builder = require("ctx-menu.builder")
 
 --- @return boolean ok
 local function check_deps()
@@ -14,15 +19,32 @@ local function check_deps()
 	return ok
 end
 
---- @param items Item[]
+--- @param item CtxMenuItem
+--- @param max_length number
+--- @return NuiLine line
+local function build_line(item, max_length)
+	local Line = require("nui.line")
+	local line = Line()
+
+	local txt = item.name
+	if item.childred ~= nil and #item.childred > 0 then
+		while txt:len() < max_length - 2 do
+			txt = txt .. " "
+		end
+		txt = txt .. ">"
+	end
+
+	line:append(txt, "Normal")
+	return line
+end
+
+--- @param items CtxMenuItem[]
 --- @param parent_winid? number
 local function render(items, parent_winid)
-	local Line = require("nui.line")
-
 	local popup
 	local clicked = function(linenr)
 		local item = items[linenr]
-		if definition.is_single_item(item) then
+		if item.childred == nil or #item.childred == 0 then
 			vim.notify("single")
 		else
 			vim.notify("list")
@@ -40,14 +62,10 @@ local function render(items, parent_winid)
 
 	popup:mount()
 
-	local is_root = parent_winid == nil
-	-- local has_children = nodes.
 	local lines = {}
-
+	local max_length = popup.win_config.width
 	for _, node in ipairs(items) do
-		local line = Line()
-		line:append(node.name, "Normal")
-		table.insert(lines, line)
+		table.insert(lines, build_line(node, max_length))
 	end
 
 	for i, line in ipairs(lines) do
@@ -55,7 +73,7 @@ local function render(items, parent_winid)
 	end
 end
 
---- @param items Item[]
+--- @param items CtxMenuItem[]
 function CtxMenu.show(items)
 	if not check_deps() then
 		return
