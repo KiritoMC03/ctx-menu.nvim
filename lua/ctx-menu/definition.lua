@@ -2,7 +2,7 @@
 --- @field name string
 --- @field childred? Item[]
 
---- @class Definition
+--- @class CtxMenu.Definition
 local definition = {}
 
 --- @param items Item[]
