@@ -10,7 +10,7 @@ function mappings.map_defaults(popup, clicked)
 		popup:unmount()
 	end)
 	popup:map("n", "<CR>", function()
-		local row, _ = vim.api.nvim_win_get_cursor(popup.winid)
+		local row, _ = unpack(vim.api.nvim_win_get_cursor(popup.winid))
 		clicked(row)
 	end)
 end

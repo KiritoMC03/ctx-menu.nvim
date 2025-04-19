@@ -34,9 +34,12 @@ end
 --- @param child? Item | Item[]
 --- @return Item Item
 function definition.create(name, child)
+	if child ~= nil and definition.is_single_item(child) then
+		child = { child }
+	end
 	return {
 		name = name,
-		childred = child == nil or definition.is_single_item(child) and { child } or child
+		childred = child,
 	}
 end
 

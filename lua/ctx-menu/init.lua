@@ -3,6 +3,7 @@ local CtxMenu = {}
 local markup = require("ctx-menu.markup")
 local mappings = require("ctx-menu.mappings")
 local event_handler = require("ctx-menu.event_handler")
+local definition = require("ctx-menu.definition")
 
 --- @return boolean ok
 local function check_deps()
@@ -19,12 +20,20 @@ local function render(items, parent_winid)
 	local Line = require("nui.line")
 
 	local popup
+	local clicked = function(linenr)
+		local item = items[linenr]
+		if definition.is_single_item(item) then
+			vim.notify("single")
+		else
+			vim.notify("list")
+		end
+	end
 	if parent_winid then
 		popup = markup.child(#items, parent_winid)
-		mappings.map_child(popup, function(linenr) end)
+		mappings.map_child(popup, clicked)
 	else
 		popup = markup.root(#items)
-		mappings.map_child(popup, function(linenr) end)
+		mappings.map_child(popup, clicked)
 	end
 
 	event_handler.subscribe(popup)
