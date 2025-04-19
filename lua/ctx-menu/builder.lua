@@ -26,14 +26,26 @@ local function is_items_list(value)
 end
 
 --- @param name string
---- @param child? CtxMenuItem | CtxMenuItem[]
+--- @param func function
 --- @return CtxMenuItem Item
-function builder.create(name, child)
+function builder.create(name, func)
+	return {
+		name = name,
+		func = func,
+		childred = nil,
+	}
+end
+
+--- @param name string
+--- @param child CtxMenuItem | CtxMenuItem[]
+--- @return CtxMenuItem Item
+function builder.create_dropdown(name, child)
 	if child ~= nil and is_single_item(child) then
 		child = { child }
 	end
 	return {
 		name = name,
+		func = nil,
 		childred = child,
 	}
 end

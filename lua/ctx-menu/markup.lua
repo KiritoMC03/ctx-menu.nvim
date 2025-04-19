@@ -37,8 +37,9 @@ function markup.root(height)
 end
 
 --- @param height number
---- @param parent_winid number
-function markup.child(height, parent_winid)
+--- @param parent_popup CtxMenuPopup
+--- @param parent_linern number
+function markup.child(height, parent_popup, parent_linern)
 	local Popup = require("nui.popup")
 	return Popup(extend(
 		"force",
@@ -46,9 +47,12 @@ function markup.child(height, parent_winid)
 		{
 			relative = {
 				type = "win",
-				winid = parent_winid,
+				winid = parent_popup.as_nui.winid,
 			},
-			position = 0,
+			position = {
+				row = parent_linern - 2,
+				col = parent_popup.as_nui.win_config.width,
+			},
 		}
 	))
 end
