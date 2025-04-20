@@ -45,6 +45,7 @@ end
 --- @param items CtxMenuItem[]
 --- @param parent_popup? CtxMenuPopup
 --- @param parent_linern? number
+--- @return CtxMenuPopup popup
 local function render(items, parent_popup, parent_linern)
 	--- @type CtxMenuPopup
 	local popup
@@ -86,15 +87,26 @@ local function render(items, parent_popup, parent_linern)
 	for i, line in ipairs(lines) do
 		line:render(nui_popup.bufnr, -1, i, 0)
 	end
+
+	return popup
 end
 
 --- @param items CtxMenuItem[]
+--- @return CtxMenuPopup | nil popup
 function CtxMenu.show(items)
 	if not check_deps() then
-		return
+		return nil
 	end
 
-	render(items)
+	return render(items)
+end
+
+--- @param popup CtxMenuPopup
+function CtxMenu.close(popup)
+	while popup ~= nil do
+		popup.as_nui:unmount()
+		popup = popup.child
+	end
 end
 
 return CtxMenu
