@@ -1,7 +1,7 @@
 local event_handler = {}
 local event = require("nui.utils.autocmd").event
 
---- @param popup CtxMenuPopup
+--- @param popup CtxMenu.Popup
 --- @return boolean win_exist
 local function parent_exist(popup)
 	return popup.parent ~= nil
@@ -10,7 +10,7 @@ local function parent_exist(popup)
 		and vim.api.nvim_win_is_valid(popup.parent.as_nui.winid)
 end
 
---- @param popup CtxMenuPopup
+--- @param popup CtxMenu.Popup
 --- @return boolean win_exist
 local function child_exist(popup)
 	return popup.child ~= nil
@@ -19,7 +19,7 @@ local function child_exist(popup)
 		and vim.api.nvim_win_is_valid(popup.child.as_nui.winid)
 end
 
---- @param popup CtxMenuPopup
+--- @param popup CtxMenu.Popup
 function event_handler.subscribe(popup)
 	local nui_popup = popup.as_nui
 	nui_popup:on({ event.BufLeave }, function()

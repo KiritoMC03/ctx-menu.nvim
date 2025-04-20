@@ -1,6 +1,6 @@
 local mappings = {}
 
---- @param popup CtxMenuPopup
+--- @param popup CtxMenu.Popup
 --- @param clicked function<number>
 function mappings.map_defaults(popup, clicked)
 	local nui_popup = popup.as_nui
@@ -19,13 +19,13 @@ function mappings.map_defaults(popup, clicked)
 	end)
 end
 
---- @param popup CtxMenuPopup
+--- @param popup CtxMenu.Popup
 --- @param clicked function<number>
 function mappings.map_root(popup, clicked)
 	mappings.map_defaults(popup, clicked)
 end
 
---- @param popup CtxMenuPopup
+--- @param popup CtxMenu.Popup
 --- @param clicked function<number>
 function mappings.map_child(popup, clicked)
 	mappings.map_defaults(popup, clicked)

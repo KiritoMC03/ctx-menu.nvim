@@ -37,7 +37,7 @@ function markup.root(height)
 end
 
 --- @param height number
---- @param parent_popup CtxMenuPopup
+--- @param parent_popup CtxMenu.Popup
 --- @param parent_linern number
 function markup.child(height, parent_popup, parent_linern)
 	local Popup = require("nui.popup")

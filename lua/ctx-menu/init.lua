@@ -1,12 +1,12 @@
---- @class CtxMenuItem
+--- @class CtxMenu.Item
 --- @field name string
 --- @field func? function
---- @field childred? CtxMenuItem[]
+--- @field childred? CtxMenu.Item[]
 
---- @class CtxMenuPopup
+--- @class CtxMenu.Popup
 --- @field as_nui NuiPopup
---- @field parent? CtxMenuPopup
---- @field child? CtxMenuPopup
+--- @field parent? CtxMenu.Popup
+--- @field child? CtxMenu.Popup
 
 --- @class CtxMenu
 local CtxMenu = {}
@@ -23,7 +23,7 @@ local function check_deps()
 	return ok
 end
 
---- @param item CtxMenuItem
+--- @param item CtxMenu.Item
 --- @param max_length number
 --- @return NuiLine line
 local function build_line(item, max_length)
@@ -42,12 +42,12 @@ local function build_line(item, max_length)
 	return line
 end
 
---- @param items CtxMenuItem[]
---- @param parent_popup? CtxMenuPopup
+--- @param items CtxMenu.Item[]
+--- @param parent_popup? CtxMenu.Popup
 --- @param parent_linern? number
---- @return CtxMenuPopup popup
+--- @return CtxMenu.Popup popup
 local function render(items, parent_popup, parent_linern)
-	--- @type CtxMenuPopup
+	--- @type CtxMenu.Popup
 	local popup
 	--- @type NuiPopup
 	local nui_popup
@@ -91,8 +91,8 @@ local function render(items, parent_popup, parent_linern)
 	return popup
 end
 
---- @param items CtxMenuItem[]
---- @return CtxMenuPopup | nil popup
+--- @param items CtxMenu.Item[]
+--- @return CtxMenu.Popup | nil popup
 function CtxMenu.show(items)
 	if not check_deps() then
 		return nil
@@ -101,7 +101,7 @@ function CtxMenu.show(items)
 	return render(items)
 end
 
---- @param popup CtxMenuPopup
+--- @param popup CtxMenu.Popup
 function CtxMenu.close(popup)
 	while popup ~= nil do
 		popup.as_nui:unmount()
